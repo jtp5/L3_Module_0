@@ -1,6 +1,17 @@
 package IntroToHashMaps;
 
-public class LogSearch {
+import java.util.HashMap;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import java.awt.event.ActionEvent;
+
+import java.awt.event.ActionListener;
+
+public class LogSearch implements ActionListener {
   /* 
 	 * Crate a HashMap of Integers for the keys and Strings for the values.
 	 * Create a GUI with three buttons. 
@@ -28,4 +39,70 @@ public class LogSearch {
 	 * 				is not in the list. 
 	 *
 	 * */
+	static HashMap<Integer, String> map = new HashMap<Integer, String>();
+	JFrame frame = new JFrame();
+	JPanel panel = new JPanel();
+	JButton add = new JButton();
+	JButton search = new JButton();
+	JButton view = new JButton();
+	JButton remove = new JButton();
+	
+	public void createUI() {
+		frame.add(panel);
+		panel.add(add);
+		panel.add(search);
+		panel.add(view);
+		panel.add(remove);
+		add.addActionListener(this);
+		search.addActionListener(this);
+		view.addActionListener(this);
+		remove.addActionListener(this);
+		add.setText("Add Name and ID");
+		search.setText("Search");
+		view.setText("View Names");
+		remove.setText("Remove a student");
+		frame.pack();
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public static void main(String[] args) {
+		LogSearch log = new LogSearch();
+		log.createUI();
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource() == add) {
+			map.put(Integer.parseInt(JOptionPane.showInputDialog("Enter an ID")), JOptionPane.showInputDialog("Enter a name for the student"));
+		}
+		if(e.getSource() == search) {
+			int s = Integer.parseInt(JOptionPane.showInputDialog("Enter an ID to search for."));
+			if(map.containsKey(s)) {
+				JOptionPane.showMessageDialog(null, "The name belonging to that ID is " + map.get(s));
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Sorry that ID is not registered to anyone.");
+			}
+		}
+		if(e.getSource() == view) {
+			String output = "";
+			for (int x: map.keySet()) {
+				output += ("ID: " + x + " " + "Name: " + map.get(x) + "\n");
+			}
+			JOptionPane.showMessageDialog(null, output);
+		}
+		if(e.getSource() == remove) {
+			int r = Integer.parseInt(JOptionPane.showInputDialog("Enter the ID of the student you would like to remove"));
+			if(map.containsKey(r)) {
+				JOptionPane.showMessageDialog(null, map.get(r) + " was removed.");
+				map.remove(r);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Sorry that ID is not registered to anyone.");
+			}
+		}
+	}
+	
 }
